@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://themidnightzone.art/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#fbfeff">
+<meta name="theme-color" content="#f7f5fd">
 <link rel="icon" href="images/the-red-light-atmosphere-day.webp">
 
 <script>
@@ -29,39 +29,48 @@
 </script>
 
 <style>
-/* Palette Forge 4.7.0 · seed "ocean" · analogous
-   locks: accent #00a1c5 (approx. 480nm, the band marine bioluminescence
-   occupies), accent-2 #c15428 (measured centroid of 38,917 saturated warm
-   pixels across all 18 paintings). Both modes pass WCAG AA. */
+/* Palette Forge 4.7.0 · seed "ocean" · analogous · mode both
+   Locks, both measured rather than chosen:
+   --accent  #8f00ff : the chromaticity of 365nm, computed from the tabulated
+     CIE 1931 2-degree observer (x=0.1752, y=0.0053, the violet corner of the
+     spectral locus), desaturated 12.6% into sRGB gamut. Caveat: 365nm is
+     invisible, ~0.0065% of peak eye response, so this is the hue a 365nm
+     stimulus would carry if it were bright enough to see. The hue is flat
+     across the near-UV band (395nm computes to #8e00ff), so the booth's
+     unmeasured wavelength does not change it.
+   --accent-2 #c15428 : centroid of 38,917 saturated warm pixels measured
+     across all 18 paintings. The work is ~62% reds through yellows, so a
+     violet room throws it forward instead of competing with it.
+   Both modes pass WCAG AA with no adjustments. */
 :root {
-  --background: #fbfeff;
-  --surface: #e9f4f7;
-  --text: #151c1f;
-  --muted: #4b626a;
-  --border: #c5d4d9;
-  --accent: #00a1c5;
+  --background: #f7f5fd;
+  --surface: #eceaf2;
+  --text: #1b1920;
+  --muted: #605a6d;
+  --border: #d1ceda;
+  --accent: #8f00ff;
   --accent-2: #c15428;
-  --accent-3: #24589a;
-  --accent-hover: #0091b1;
-  --on-accent: #080e11;
-  --focus-ring: #2c8da9;
-  --card-hover: #dceaef;
+  --accent-3: #940087;
+  --accent-hover: #7d00e1;
+  --on-accent: #fbf9ff;
+  --focus-ring: #9459e8;
+  --card-hover: #e2dfea;
   --glow: none;
 }
 [data-theme="dark"] {
-  --background: #0d181c;
-  --surface: #1a2528;
-  --text: #edf5f8;
-  --muted: #91a9b2;
-  --border: #2b393d;
-  --accent: #00a1c5;
+  --background: #17141d;
+  --surface: #24212a;
+  --text: #f4f2f9;
+  --muted: #a7a1b5;
+  --border: #37343f;
+  --accent: #8f00ff;
   --accent-2: #c15428;
-  --accent-3: #649ae1;
-  --accent-hover: #2ab1d5;
-  --on-accent: #080e11;
-  --focus-ring: #71ccea;
-  --card-hover: #222f33;
-  --glow: 0 0 40px -8px rgba(0, 161, 197, 0.45);
+  --accent-3: #ee3fda;
+  --accent-hover: #9534ff;
+  --on-accent: #fbf9ff;
+  --focus-ring: #c8adff;
+  --card-hover: #2c2934;
+  --glow: 0 0 44px -8px rgba(143, 0, 255, 0.5);
 }
 
 * { box-sizing: border-box; }
@@ -564,7 +573,7 @@ footer p { margin: 0 0 6px; }
     const root = document.documentElement;
     const meta = document.querySelector('meta[name="theme-color"]');
     const buttons = document.querySelectorAll(".mode");
-    const CHROME = { light: "#fbfeff", dark: "#0d181c" };
+    const CHROME = { light: "#f7f5fd", dark: "#17141d" };
 
     function apply(mode, persist) {
       root.setAttribute("data-theme", mode);
