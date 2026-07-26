@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>The Midnight Zone &middot; UV-reactive paintings by Amy Chace</title>
-<meta name="description" content="Amy Chace paints with UV pigments: one picture in daylight, another under blacklight. Eighteen originals at Fish City Studios, Gloucester MA. Every piece ships with the light it was painted for.">
+<meta name="description" content="A bathypelagic blacklight submersion. Amy Chace paints with UV pigments: one picture in daylight, another under blacklight. Eighteen originals at Fish City Studios, Gloucester MA.">
 <meta property="og:title" content="The Midnight Zone">
-<meta property="og:description" content="Paintings that read twice. Daylight one way, blacklight another. Every piece ships with the light.">
+<meta property="og:description" content="A bathypelagic blacklight submersion. Paintings that read twice: daylight one way, blacklight another.">
 <meta property="og:image" content="https://themidnightzone.art/og.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://themidnightzone.art/">
@@ -89,31 +89,33 @@ body {
 
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 22px; }
 
-/* ---------- header + the toggle ---------- */
+/* ---------- sonar ping in the headline ----------
+   A contact return: the emitter blips, two rings travel out and fade.
+   Rings are staggered by half the sweep so a second is always in flight,
+   and the interval is slow (3.6s) because a real ping waits for its echo. */
 
-header {
-  position: sticky; top: 0; z-index: 20;
-  background: color-mix(in srgb, var(--background) 88%, transparent);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
-  transition: background 500ms ease, border-color 500ms ease;
+.sonar {
+  position: relative; display: inline-block;
+  width: 0.30em; height: 0.30em; border-radius: 50%;
+  background: var(--accent); vertical-align: 0.28em;
+  margin-left: 0.26em;
+  animation: blip 3.6s ease-out infinite;
 }
-header .wrap {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 16px; padding-top: 12px; padding-bottom: 12px;
+.sonar::before, .sonar::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  border: 0.06em solid var(--accent);
+  animation: ping 3.6s cubic-bezier(0.12, 0.62, 0.36, 1) infinite;
 }
-.wordmark {
-  font-size: 15px; font-weight: 650; letter-spacing: 0.14em;
-  text-transform: uppercase; margin: 0; white-space: nowrap;
-}
-.wordmark .dot {
-  color: var(--accent);
-  animation: pulse 2.6s ease-in-out infinite;
-}
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.sonar::after { animation-delay: 1.8s; }
 
-@media (max-width: 420px) {
-  .wordmark { font-size: 12.5px; letter-spacing: 0.08em; }
+@keyframes ping {
+  0%   { transform: scale(1);   opacity: 0.85; }
+  75%  { opacity: 0; }
+  100% { transform: scale(5.2); opacity: 0; }
+}
+@keyframes blip {
+  0%, 6%   { opacity: 1; box-shadow: 0 0 0.7em 0.06em var(--accent); }
+  40%, 100% { opacity: 0.5; box-shadow: 0 0 0 0 transparent; }
 }
 
 /* The switch lives in the hero, directly after the objection it answers.
@@ -149,14 +151,14 @@ header .wrap {
 
 /* ---------- hero ---------- */
 
-.hero { padding: 76px 0 54px; }
+.hero { padding: 96px 0 56px; }
 h1 {
-  font-size: clamp(36px, 6.2vw, 62px); line-height: 1.05;
-  letter-spacing: -0.025em; margin: 0 0 22px; font-weight: 680;
-  max-width: 19ch;
+  font-size: clamp(42px, 8vw, 88px); line-height: 1.02;
+  letter-spacing: -0.03em; margin: 0 0 18px; font-weight: 680;
+  max-width: 14ch;
 }
 .lede {
-  font-size: clamp(18px, 2.3vw, 23px); line-height: 1.45;
+  font-size: clamp(19px, 2.4vw, 25px); line-height: 1.4;
   max-width: 34ch; margin: 0 0 20px; color: var(--text);
 }
 .hero p.body { max-width: 56ch; margin: 0 0 16px; color: var(--muted); font-size: 16.5px; }
@@ -277,18 +279,12 @@ footer p { margin: 0 0 6px; }
 </head>
 <body>
 
-<header>
-  <div class="wrap">
-    <p class="wordmark">The Midnight Zone <span class="dot">&#9679;</span></p>
-  </div>
-</header>
-
 <main>
 
 <section class="hero wrap">
-  <h1>A bathypelagic blacklight submersion</h1>
-  <p class="lede">A thousand meters down, the ocean stops receiving light and starts making its own.</p>
-  <p class="body">Amy Chace paints with UV pigments. In daylight these are one set of paintings. Under blacklight they are another. Same board, same brushstrokes, two pictures. There is a booth in Gloucester lit for exactly this, and people walk in, watch the wall turn on, and then say the same thing every time: <strong>I don't have a blacklight room at home.</strong></p>
+  <h1>The Midnight Zone<span class="sonar" aria-hidden="true"></span></h1>
+  <p class="lede">A bathypelagic blacklight submersion.</p>
+  <p class="body">A thousand meters down, the ocean stops receiving light and starts making its own. Amy Chace paints with UV pigments, so her work does the same thing. In daylight it is one set of paintings. Under blacklight it is another: same board, same brushstrokes, a different picture. There is a booth in Gloucester lit for exactly this, and failing a trip to Cape Ann, there is the switch below.</p>
   <div class="switch">
     <span class="seg" role="group" aria-label="Daylight or blacklight">
       <button class="mode" data-mode="light" aria-pressed="true" aria-label="Daylight">
@@ -552,7 +548,7 @@ footer p { margin: 0 0 6px; }
 <section class="wrap">
   <div class="band">
     <h2>Come stand in it</h2>
-    <p>The Midnight Zone is a UV-lit booth inside <strong>Fish City Studios</strong>, 39 Main St, Gloucester, Massachusetts, in Jon Sarkin's last studio. The work hangs there under the light it was made for, alongside the Sarkin archive.</p>
+    <p>The Midnight Zone is a UV-lit booth inside <strong>Fish City Studios</strong>, 39 Main St, Gloucester, Massachusetts, in Jon Sarkin's last studio. The work hangs there under blacklight, alongside the Sarkin archive.</p>
     <p>Amy Chace is a Rockport painter and illustrator who works as the Whimsical Maximalist. She was a band photographer in New York before this, and she has published two oracle decks with Schiffer.</p>
     <div class="cta-row">
       <a class="btn ghost" href="https://fishcitystudios.com/">fishcitystudios.com</a>
