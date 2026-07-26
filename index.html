@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>The Midnight Zone &middot; UV-reactive paintings by Amy Chace</title>
+<meta name="description" content="Amy Chace paints with UV pigments: one picture in daylight, another under blacklight. Eighteen originals at Fish City Studios, Gloucester MA. Every piece ships with the light it was painted for.">
+<meta property="og:title" content="The Midnight Zone">
+<meta property="og:description" content="Paintings that read twice. Daylight one way, blacklight another. Every piece ships with the light.">
+<meta property="og:image" content="https://themidnightzone.art/og.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://themidnightzone.art/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#fbfeff">
+<link rel="icon" href="images/the-red-light-atmosphere-day.webp">
+
+<script>
+  /* Pre-paint, so there is no flash. Deliberately NOT following
+     prefers-color-scheme: here the mode is content, not a preference.
+     Everyone lands in daylight and turns the lights out themselves. */
+  (() => {
+    try {
+      var t = localStorage.getItem("theme");
+      document.documentElement.setAttribute("data-theme", t || "light");
+      if (t) document.documentElement.setAttribute("data-returning", "");
+    } catch (_) {}
+  })();
+</script>
+
+<style>
+/* Palette Forge 4.7.0 · seed "ocean" · analogous
+   locks: accent #00a1c5 (approx. 480nm, the band marine bioluminescence
+   occupies), accent-2 #c15428 (measured centroid of 38,917 saturated warm
+   pixels across all 18 paintings). Both modes pass WCAG AA. */
+:root {
+  --background: #fbfeff;
+  --surface: #e9f4f7;
+  --text: #151c1f;
+  --muted: #4b626a;
+  --border: #c5d4d9;
+  --accent: #00a1c5;
+  --accent-2: #c15428;
+  --accent-3: #24589a;
+  --accent-hover: #0091b1;
+  --on-accent: #080e11;
+  --focus-ring: #2c8da9;
+  --card-hover: #dceaef;
+  --glow: none;
+}
+[data-theme="dark"] {
+  --background: #0d181c;
+  --surface: #1a2528;
+  --text: #edf5f8;
+  --muted: #91a9b2;
+  --border: #2b393d;
+  --accent: #00a1c5;
+  --accent-2: #c15428;
+  --accent-3: #649ae1;
+  --accent-hover: #2ab1d5;
+  --on-accent: #080e11;
+  --focus-ring: #71ccea;
+  --card-hover: #222f33;
+  --glow: 0 0 40px -8px rgba(0, 161, 197, 0.45);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.55;
+  transition: background 500ms ease, color 500ms ease;
+}
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+
+/* ---------- header + the toggle ---------- */
+
+header {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--background) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  transition: background 500ms ease, border-color 500ms ease;
+}
+header .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding-top: 12px; padding-bottom: 12px;
+}
+.wordmark {
+  font-size: 15px; font-weight: 650; letter-spacing: 0.14em;
+  text-transform: uppercase; margin: 0; white-space: nowrap;
+}
+.wordmark .dot {
+  color: var(--accent);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.switch { display: flex; align-items: center; gap: 12px; }
+.hint {
+  font-size: 12.5px; color: var(--muted); white-space: nowrap;
+}
+[data-returning] .hint { display: none; }
+@media (max-width: 700px) { .hint { display: none; } }
+@media (max-width: 420px) {
+  .wordmark { font-size: 12.5px; letter-spacing: 0.08em; }
+  header .wrap { gap: 10px; }
+}
+
+/* The header hint has no room on a phone, so the hero carries the
+   instruction instead. Both disappear once the switch has been used. */
+.hint-inline {
+  display: none;
+  margin: 16px 0 0; font-size: 15px; color: var(--accent);
+  font-weight: 550;
+}
+@media (max-width: 700px) { .hint-inline { display: block; } }
+[data-returning] .hint-inline { display: none; }
+
+.seg {
+  display: inline-flex; align-items: stretch;
+  border: 1px solid var(--border); border-radius: 999px;
+  overflow: hidden; background: var(--surface);
+  transition: background 500ms ease, border-color 500ms ease;
+}
+.seg .mode {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 0; background: transparent; cursor: pointer;
+  color: var(--muted); padding: 8px 15px;
+  font: inherit; font-size: 13px; font-weight: 550;
+  letter-spacing: 0.02em; white-space: nowrap;
+  transition: background 220ms ease, color 220ms ease;
+}
+.seg .mode:hover { color: var(--text); }
+.seg .mode[aria-pressed="true"] {
+  background: var(--accent); color: var(--on-accent);
+}
+.seg .mode:focus-visible {
+  outline: 2px solid var(--focus-ring); outline-offset: -2px;
+}
+.seg svg { flex: none; }
+@media (max-width: 460px) {
+  .seg .mode span { display: none; }
+  .seg .mode { padding: 9px 13px; }
+}
+
+/* ---------- hero ---------- */
+
+.hero { padding: 76px 0 54px; }
+h1 {
+  font-size: clamp(38px, 7vw, 68px); line-height: 1.03;
+  letter-spacing: -0.025em; margin: 0 0 22px; font-weight: 680;
+  max-width: 15ch;
+}
+.lede {
+  font-size: clamp(18px, 2.3vw, 23px); line-height: 1.45;
+  max-width: 34ch; margin: 0 0 20px; color: var(--text);
+}
+.hero p.body { max-width: 56ch; margin: 0 0 16px; color: var(--muted); font-size: 16.5px; }
+.hero strong { color: var(--text); font-weight: 600; }
+
+.promise {
+  display: inline-flex; align-items: center; gap: 11px;
+  margin-top: 14px; padding: 13px 20px 13px 16px;
+  border: 1px solid var(--accent); border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  font-size: 15.5px; font-weight: 560;
+  box-shadow: var(--glow);
+  transition: background 500ms ease, box-shadow 500ms ease, border-color 500ms ease;
+}
+.promise svg { flex: none; color: var(--accent); }
+
+/* ---------- placeholder notice (delete with the placeholders) ---------- */
+
+.notice {
+  display: none;
+  margin: 0 0 30px; padding: 13px 17px;
+  border: 1px dashed var(--accent-2); border-radius: 9px;
+  background: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  font-size: 14px; color: var(--text);
+}
+[data-theme="dark"] .notice { display: block; }
+
+/* ---------- the grid ---------- */
+
+.grid-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  margin: 0 0 22px; padding-top: 26px;
+  border-top: 1px solid var(--border);
+}
+h2 { font-size: 26px; letter-spacing: -0.015em; margin: 0; font-weight: 650; }
+.grid-head p { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+.grid { columns: 3; column-gap: 20px; padding-bottom: 12px; }
+@media (max-width: 900px) { .grid { columns: 2; } }
+@media (max-width: 560px) { .grid { columns: 1; } }
+
+.piece {
+  display: block; break-inside: avoid; margin: 0 0 20px;
+  text-decoration: none; color: inherit;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface); overflow: hidden;
+  transition: border-color 200ms ease, transform 200ms ease,
+              background 500ms ease, box-shadow 300ms ease;
+}
+.piece:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--glow); }
+.piece:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+
+.pair { position: relative; display: block; line-height: 0; }
+.pair img { display: block; width: 100%; height: auto; }
+.pair .uv {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0; transition: opacity 550ms ease;
+}
+[data-theme="dark"] .pair .uv { opacity: 1; }
+
+/* Badge over fabricated UV frames. Remove with the data-uv attributes. */
+.pair[data-uv="placeholder"]::after {
+  content: "simulated"; position: absolute; right: 8px; bottom: 8px;
+  z-index: 2; opacity: 0; transition: opacity 550ms ease;
+  font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase;
+  font-weight: 600; line-height: 1;
+  padding: 5px 8px; border-radius: 4px;
+  background: var(--accent-2); color: #fff;
+}
+[data-theme="dark"] .pair[data-uv="placeholder"]::after { opacity: 0.92; }
+
+.meta { display: block; padding: 13px 15px 15px; }
+.meta .t { display: block; font-weight: 620; font-size: 15.5px; letter-spacing: -0.005em; }
+.meta .d { display: block; color: var(--muted); font-size: 12.5px; margin-top: 3px; }
+.meta .p { display: block; margin-top: 7px; font-size: 14px; font-weight: 600; color: var(--accent-3); }
+
+/* ---------- venue + visit ---------- */
+
+.band {
+  margin-top: 34px; padding: 30px 30px 32px;
+  border: 1px solid var(--border); border-radius: 12px;
+  background: var(--surface);
+  transition: background 500ms ease, border-color 500ms ease;
+}
+.band h2 { margin-bottom: 12px; }
+.band p { margin: 0 0 14px; max-width: 62ch; color: var(--muted); font-size: 16px; }
+.band p strong { color: var(--text); font-weight: 600; }
+.band ul { margin: 0 0 18px; padding-left: 20px; color: var(--muted); font-size: 15.5px; }
+.band li { margin-bottom: 5px; }
+.band .total { color: var(--text); font-weight: 600; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 20px; border-radius: 999px;
+  background: var(--accent); color: var(--on-accent);
+  text-decoration: none; font-weight: 600; font-size: 15px;
+  border: 1px solid transparent;
+  transition: background 180ms ease, transform 180ms ease;
+}
+.btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+.btn.ghost { background: transparent; color: var(--text); border-color: var(--border); }
+.btn.ghost:hover { background: var(--card-hover); border-color: var(--accent); }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 11px; }
+
+footer {
+  margin-top: 46px; padding: 28px 0 44px;
+  border-top: 1px solid var(--border);
+  color: var(--muted); font-size: 13.5px;
+  transition: border-color 500ms ease;
+}
+footer a { color: var(--accent-3); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+footer p { margin: 0 0 6px; }
+
+/* ---------- motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="wordmark">The Midnight Zone <span class="dot">&#9679;</span></p>
+    <div class="switch">
+      <span class="hint">Turn the lights out &rarr;</span>
+      <span class="seg" role="group" aria-label="Daylight or blacklight">
+        <button class="mode" data-mode="light" aria-pressed="true" aria-label="Daylight">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M19.4 4.6l-2.1 2.1M6.7 17.3l-2.1 2.1"/></svg>
+          <span>Daylight</span>
+        </button>
+        <button class="mode" data-mode="dark" aria-pressed="false" aria-label="Blacklight">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+          <span>Blacklight</span>
+        </button>
+      </span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="hero wrap">
+  <h1>Painted to be seen twice.</h1>
+  <p class="lede">A thousand meters down, the ocean stops receiving light and starts making its own.</p>
+  <p class="body">Amy Chace paints with UV pigments. In daylight these are one set of paintings. Under blacklight they are another. Same board, same brushstrokes, two pictures. There is a booth in Gloucester lit for exactly this, and people walk in, watch the wall turn on, and then say the same thing every time: <strong>I don't have a blacklight room at home.</strong></p>
+  <p class="promise">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
+    So we fixed that. Every piece ships with the light it was painted for.
+  </p>
+  <p class="hint-inline">Use the switch at the top to turn the lights out. &uarr;</p>
+</section>
+
+<section class="wrap">
+  <div class="grid-head">
+    <h2>Eighteen originals</h2>
+    <p>One of a kind, every one. Prices are as listed at Fish City Studios.</p>
+  </div>
+
+  <p class="notice"><strong>Note for review:</strong> the blacklight images below are simulated, not photographs. The real UV shoot has not happened yet, so these are the daylight frames pushed dark and cool purely to show how the switch behaves. Anything marked <em>simulated</em> gets replaced before launch.</p>
+
+  <div class="grid">
+
+    <a class="piece" href="https://fishcitystudios.com/products/the-red-light-atmosphere">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/the-red-light-atmosphere-day.webp" width="1200" height="1265" alt="One panel from The Red Light Atmosphere: an orange anglerfish in profile with its jaws open and a glowing yellow lure hanging above its head." loading="eager">
+        <img class="uv" src="images/the-red-light-atmosphere-uv.webp" width="1200" height="1265" alt="" aria-hidden="true" loading="eager">
+      </span>
+      <span class="meta">
+        <span class="t">The Red Light Atmosphere</span>
+        <span class="d">Acrylic with oil on wood &middot; set of six, each 4.75 &times; 4.75 in</span>
+        <span class="p">$350</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/safe-harbor">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/safe-harbor-day.webp" width="1200" height="1766" alt="Safe Harbor: a broad black vertical brushstroke standing over a soft rainbow wash, with a small dark skyline along the upper edge." loading="eager">
+        <img class="uv" src="images/safe-harbor-uv.webp" width="1200" height="1766" alt="" aria-hidden="true" loading="eager">
+      </span>
+      <span class="meta">
+        <span class="t">Safe Harbor</span>
+        <span class="d">Acrylic with oil on stretched canvas &middot; 24 &times; 36 in</span>
+        <span class="p">$2,100</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/love-angler-fish">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/love-angler-fish-day.webp" width="1200" height="1039" alt="Love Angler Fish: a magenta fish with a wide toothy grin, its lure curling forward from its head into a pink heart." loading="eager">
+        <img class="uv" src="images/love-angler-fish-uv.webp" width="1200" height="1039" alt="" aria-hidden="true" loading="eager">
+      </span>
+      <span class="meta">
+        <span class="t">Love Angler Fish</span>
+        <span class="d">Acrylic with oil on wood &middot; 5.5 &times; 4.5 in</span>
+        <span class="p">$75</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/incoming">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/incoming-day.webp" width="1200" height="980" alt="Incoming: a red figure at the left edge of a red room watching a pale glowing dome rise out of the water, in a red frame." loading="lazy">
+        <img class="uv" src="images/incoming-uv.webp" width="1200" height="980" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Incoming</span>
+        <span class="d">Acrylic with oil on canvas board &middot; 21.75 &times; 17.5 in</span>
+        <span class="p">$950</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/atmosphere-on-loop">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/atmosphere-on-loop-day.webp" width="1200" height="1483" alt="Atmosphere on Loop: a white moon ringed by an orange sun above a dark blue field scattered with small fish and stars." loading="lazy">
+        <img class="uv" src="images/atmosphere-on-loop-uv.webp" width="1200" height="1483" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Atmosphere on Loop</span>
+        <span class="d">Acrylic with oil on stretched canvas &middot; 16 &times; 20 in</span>
+        <span class="p">$880</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/i-knew-it">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/i-knew-it-day.webp" width="1200" height="967" alt="I KNEW IT!: a large pale fish curving through a rainbow arc, trailed by a stream of small purple and green fish." loading="lazy">
+        <img class="uv" src="images/i-knew-it-uv.webp" width="1200" height="967" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">I KNEW IT!</span>
+        <span class="d">Acrylic with oil on canvas &middot; 20 &times; 16 in</span>
+        <span class="p">$880</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/sardines-1">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/sardines-1-day.webp" width="1200" height="1572" alt="Sardines #1: three small fish threading through orange and green kelp fronds against a pale blue ground." loading="lazy">
+        <img class="uv" src="images/sardines-1-uv.webp" width="1200" height="1572" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Sardines #1</span>
+        <span class="d">Acrylic with oil on stretched canvas &middot; 12 &times; 16 in</span>
+        <span class="p">$525</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/spotlight-cuttlefish">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/spotlight-cuttlefish-day.webp" width="1200" height="359" alt="Spotlight Cuttlefish: a long horizontal red panel of patterned faces, with a pale creature surfacing at the right end." loading="lazy">
+        <img class="uv" src="images/spotlight-cuttlefish-uv.webp" width="1200" height="359" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Spotlight Cuttlefish</span>
+        <span class="d">Acrylic with oil on wood &middot; 16.5 &times; 4.5 in</span>
+        <span class="p">$175</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/cracked">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/cracked-day.webp" width="1200" height="1468" alt="Cracked: a tall dark figure with an orange head standing on a yellow floor, orange scribbled light breaking behind it." loading="lazy">
+        <img class="uv" src="images/cracked-uv.webp" width="1200" height="1468" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Cracked</span>
+        <span class="d">Acrylic with oil on canvas &middot; 8 &times; 10 in</span>
+        <span class="p">$325</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/impressions">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/impressions-day.webp" width="1200" height="1861" alt="Impressions: a dark-skinned figure with pale wings and a star overhead, above bands of red and teal filled with fish and flowers." loading="lazy">
+        <img class="uv" src="images/impressions-uv.webp" width="1200" height="1861" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Impressions</span>
+        <span class="d">Acrylic with oil on wood &middot; 7.5 &times; 12 in</span>
+        <span class="p">$275</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/the-headlands">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/the-headlands-day.webp" width="1200" height="946" alt="The Headlands: three faces above a rocky shoreline, with cloud shapes and a garden growing out of the topmost head." loading="lazy">
+        <img class="uv" src="images/the-headlands-uv.webp" width="1200" height="946" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">The Headlands</span>
+        <span class="d">Acrylic with oil on paper &middot; 11.5 &times; 9 in</span>
+        <span class="p">$275</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/brocolini">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/brocolini-day.webp" width="1200" height="1491" alt="Brocolini: a dense collage of faces, houses, boats and small creatures in vivid pinks, blues and greens, in a white frame." loading="lazy">
+        <img class="uv" src="images/brocolini-uv.webp" width="1200" height="1491" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Brocolini</span>
+        <span class="d">Acrylic with oil on paper &middot; 11.75 &times; 9.25 in</span>
+        <span class="p">$275</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/963-hz">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/963-hz-day.webp" width="1200" height="957" alt="963 HZ: a crowded scene of bottles, a reclining pig, boats and faces worked in olive and blue, framed." loading="lazy">
+        <img class="uv" src="images/963-hz-uv.webp" width="1200" height="957" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">963 HZ</span>
+        <span class="d">Acrylic with oil on paper &middot; 9.25 &times; 11.75 in</span>
+        <span class="p">$275</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/jackpot">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/jackpot-day.webp" width="1200" height="1493" alt="Jackpot: a pale-faced figure wearing a crown beside a stepped orange tower, with small houses and a fish overhead." loading="lazy">
+        <img class="uv" src="images/jackpot-uv.webp" width="1200" height="1493" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Jackpot</span>
+        <span class="d">Acrylic with oil on paper &middot; 8 &times; 10.25 in</span>
+        <span class="p">$275</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/surprise-guest">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/surprise-guest-day.webp" width="1200" height="575" alt="Surprise Guest: a long horizontal panel with a blonde girl in a pink bow flanked by two white ghosts on deep blue." loading="lazy">
+        <img class="uv" src="images/surprise-guest-uv.webp" width="1200" height="575" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Surprise Guest</span>
+        <span class="d">Acrylic with oil on wood &middot; 12 &times; 5.25 in</span>
+        <span class="p">$150</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/bigmouth">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/bigmouth-day.webp" width="1200" height="723" alt="Bigmouth: a bright green fish with a long open jaw on a deep green ground flecked with yellow dots." loading="lazy">
+        <img class="uv" src="images/bigmouth-uv.webp" width="1200" height="723" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Bigmouth</span>
+        <span class="d">Acrylic with oil on wood &middot; 8 &times; 4.25 in</span>
+        <span class="p">$85</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/instigator">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/instigator-day.webp" width="1200" height="929" alt="Instigator: a green fish with a wide toothy mouth on an orange ground, a small red heart at its tail." loading="lazy">
+        <img class="uv" src="images/instigator-uv.webp" width="1200" height="929" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Instigator</span>
+        <span class="d">Acrylic with oil on wood &middot; 6 &times; 4.5 in</span>
+        <span class="p">$75</span>
+      </span>
+    </a>
+
+    <a class="piece" href="https://fishcitystudios.com/products/fearless">
+      <span class="pair" data-uv="placeholder">
+        <img class="day" src="images/fearless-day.webp" width="1200" height="1150" alt="Fearless: a yellow fish and an orange fish facing each other across a red and teal field, a white sun between them." loading="lazy">
+        <img class="uv" src="images/fearless-uv.webp" width="1200" height="1150" alt="" aria-hidden="true" loading="lazy">
+      </span>
+      <span class="meta">
+        <span class="t">Fearless</span>
+        <span class="d">Acrylic with oil on wood &middot; 4.5 &times; 4.5 in</span>
+        <span class="p">$65</span>
+      </span>
+    </a>
+
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="band">
+    <h2>For rooms that already have the lighting</h2>
+    <p>If you run a space with a UV rig, you already own the second half of this work. The whole body installs as one piece: eighteen originals, <span class="total">$8,010</span> for all of them, individually available.</p>
+    <ul>
+      <li>Immersive rooms, blacklight mini golf, arcade bars, science centers</li>
+      <li>Music venues, clubs, and festival art programs</li>
+      <li>Galleries working the pop-surreal and self-taught lane</li>
+    </ul>
+    <p>Viewings in Gloucester by arrangement. Ask and we will send the full inventory with dimensions.</p>
+    <div class="cta-row">
+      <a class="btn" href="mailto:mark@fishcitystudios.com?subject=The%20Midnight%20Zone%20(installation%20enquiry)">Enquire about the full body</a>
+      <a class="btn ghost" href="https://fishcitystudios.com/collections/amy-chace">See all 18 in the shop</a>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="band">
+    <h2>Come stand in it</h2>
+    <p>The Midnight Zone is a UV-lit booth inside <strong>Fish City Studios</strong>, 39 Main St, Gloucester, Massachusetts, in Jon Sarkin's last studio. The work hangs there under the light it was made for, alongside the Sarkin archive.</p>
+    <p>Amy Chace is a Rockport painter and illustrator who works as the Whimsical Maximalist. She was a band photographer in New York before this, and she has published two oracle decks with Schiffer.</p>
+    <div class="cta-row">
+      <a class="btn ghost" href="https://fishcitystudios.com/">fishcitystudios.com</a>
+      <a class="btn ghost" href="https://instagram.com/chaceamy">Amy on Instagram</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p>Paintings &copy; Amy Chace. Shown and sold at Jon Sarkin's Fish City Studios, Gloucester MA.</p>
+  <p>See also: <a href="https://astraperdita.com/">astraperdita.com</a> &middot; <a href="https://theintelligencecommunity.art/">theintelligencecommunity.art</a></p>
+</footer>
+
+<script>
+  (() => {
+    const root = document.documentElement;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    const buttons = document.querySelectorAll(".mode");
+    const CHROME = { light: "#fbfeff", dark: "#0d181c" };
+
+    function apply(mode, persist) {
+      root.setAttribute("data-theme", mode);
+      buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
+      if (meta) meta.setAttribute("content", CHROME[mode]);
+      if (persist) {
+        try { localStorage.setItem("theme", mode); } catch (_) {}
+        root.setAttribute("data-returning", "");
+      }
+    }
+
+    buttons.forEach(b => b.addEventListener("click", () => apply(b.dataset.mode, true)));
+    apply(root.getAttribute("data-theme") || "light", false);
+  })();
+</script>
+
+</body>
+</html>
