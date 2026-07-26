@@ -29,6 +29,42 @@
 </script>
 
 <style>
+/* ---------- type ----------
+   Self-hosted, because every one of these sites holds a zero-third-party-
+   request rule. Both OFL, licences in fonts/.
+
+   Fraunces (display): a variable serif whose SOFT axis bends the curves and
+   whose WONK axis swaps in flowing alternates for g h m n s. Set warm but
+   restrained, so it reads as current and kelp rather than as a cartoon.
+   Manrope (body): quiet humanist sans, open apertures, stays out of the way.
+
+   Do not run fraunces.woff2 through pyftsubset to save weight. WONK works by
+   GSUB FeatureVariations, and the subsetter does not close over those: it
+   keeps the feature records but prunes the .alt glyphs they point at, so the
+   axis silently goes inert and the headline quietly loses its character.
+   Verified by measuring 'ghmns' at WONK 0 vs 1. The full face is 190KB, which
+   is noise beside 4.3MB of artwork. */
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("fonts/fraunces.woff2") format("woff2-variations");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Manrope";
+  src: url("fonts/manrope.woff2") format("woff2-variations");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-display: "Fraunces", Palatino, "Palatino Linotype", Georgia, serif;
+  --font-body: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
 /* Palette Forge 4.7.0 · seed "ocean" · analogous · mode both
    Locks, both measured rather than chosen:
    --accent  #8f00ff : the chromaticity of 365nm, computed from the tabulated
@@ -81,7 +117,7 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--text);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   line-height: 1.55;
   transition: background 500ms ease, color 500ms ease;
@@ -153,13 +189,18 @@ body {
 
 .hero { padding: 96px 0 56px; }
 h1 {
-  font-size: clamp(42px, 8vw, 88px); line-height: 1.02;
-  letter-spacing: -0.03em; margin: 0 0 18px; font-weight: 680;
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144, "SOFT" 55, "WONK" 1;
+  font-size: clamp(42px, 8.4vw, 92px); line-height: 1.0;
+  letter-spacing: -0.022em; margin: 0 0 20px; font-weight: 620;
   max-width: 14ch;
 }
 .lede {
-  font-size: clamp(19px, 2.4vw, 25px); line-height: 1.4;
-  max-width: 34ch; margin: 0 0 20px; color: var(--text);
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 48, "SOFT" 60, "WONK" 1;
+  font-size: clamp(20px, 2.5vw, 27px); line-height: 1.35;
+  font-weight: 420; letter-spacing: -0.005em;
+  max-width: 34ch; margin: 0 0 22px; color: var(--text);
 }
 .hero p.body { max-width: 56ch; margin: 0 0 16px; color: var(--muted); font-size: 16.5px; }
 .hero strong { color: var(--text); font-weight: 600; }
@@ -183,7 +224,11 @@ h1 {
   margin: 0 0 22px; padding-top: 26px;
   border-top: 1px solid var(--border);
 }
-h2 { font-size: 26px; letter-spacing: -0.015em; margin: 0; font-weight: 650; }
+h2 {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 36, "SOFT" 50, "WONK" 0;
+  font-size: 29px; letter-spacing: -0.012em; margin: 0; font-weight: 580;
+}
 .grid-head p { margin: 0; color: var(--muted); font-size: 14.5px; }
 
 .grid { columns: 3; column-gap: 20px; padding-bottom: 12px; }
@@ -221,7 +266,11 @@ h2 { font-size: 26px; letter-spacing: -0.015em; margin: 0; font-weight: 650; }
 [data-theme="dark"] .pair[data-uv="placeholder"]::after { opacity: 0.92; }
 
 .meta { display: block; padding: 13px 15px 15px; }
-.meta .t { display: block; font-weight: 620; font-size: 15.5px; letter-spacing: -0.005em; }
+.meta .t {
+  display: block; font-family: var(--font-display);
+  font-variation-settings: "opsz" 24, "SOFT" 50, "WONK" 0;
+  font-weight: 580; font-size: 18px; letter-spacing: -0.008em;
+}
 .meta .d { display: block; color: var(--muted); font-size: 12.5px; margin-top: 3px; }
 .meta .p { display: block; margin-top: 7px; font-size: 14px; font-weight: 600; color: var(--accent-3); }
 
