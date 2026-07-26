@@ -52,6 +52,17 @@ Also outstanding: the booth's UV wavelength (365nm vs 395nm) is still unmeasured
 
 ## DNS
 
+> [!NOTE]
+> The domain file is currently parked as **`CNAME.pending`**, not `CNAME`.
+>
+> With a live `CNAME` file, Pages sets the custom domain immediately and the
+> `github.io` URL redirects to it. Until DNS actually points at GitHub that
+> redirect goes nowhere, which would break the review URL. So while this is in
+> review the site lives at **https://aphelionz.github.io/midnight-zone-site/**.
+>
+> When DNS is in place: `git mv CNAME.pending CNAME`, push, then set the custom
+> domain under Settings > Pages and tick Enforce HTTPS once the cert provisions.
+
 Not documented in any of the sibling repos, so it is written down here. `themidnightzone.art` is an apex domain, so it needs A records rather than a CNAME record at the registrar:
 
 ```
@@ -84,4 +95,4 @@ Both modes pass WCAG AA. If the UV photographs come back a dominant green or mag
 - `optimize-images.sh` : raw PNG to web WebP
 - `make-uv-placeholders.py` : temporary, delete after the real shoot
 - `og.jpg` : social card
-- `CNAME` : custom domain for GitHub Pages
+- `CNAME.pending` : custom domain, parked until DNS is live (see DNS above)
