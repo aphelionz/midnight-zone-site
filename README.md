@@ -55,6 +55,11 @@ Also outstanding: the booth's UV wavelength (365nm vs 395nm) is still unmeasured
 DNS is live and the site serves from **https://themidnightzone.art/**. The
 `github.io` URL now 301s to it.
 
+> [!WARNING]
+> **Enforce HTTPS is still off.** The certificate is provisioned and approved,
+> so https works, but plain `http://themidnightzone.art/` is served as-is
+> rather than redirected. Tick it under Settings > Pages.
+
 > [!NOTE]
 > The domain file was parked as `CNAME.pending` while DNS propagated, because a
 > live `CNAME` makes Pages redirect the `github.io` URL to a domain that does
