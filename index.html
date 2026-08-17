@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>The Midnight Zone &middot; UV-reactive paintings by Amy Chace</title>
-<meta name="description" content="A bathypelagic blacklight submersion. Amy Chace paints with UV pigments: one picture in daylight, another under blacklight. Eighteen originals at Fish City Studios, Gloucester MA.">
+<meta name="description" content="A bathypelagic blacklight submersion. Amy Chace paints with UV pigments: one picture in daylight, another under blacklight. Twelve originals at Fish City Studios, Gloucester MA.">
 <meta property="og:title" content="The Midnight Zone">
 <meta property="og:description" content="A bathypelagic blacklight submersion. Paintings that read twice: daylight one way, blacklight another.">
 <meta property="og:image" content="https://themidnightzone.art/og.jpg">
@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://themidnightzone.art/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f7f5fd">
-<link rel="icon" href="images/the-red-light-atmosphere-day.webp">
+<link rel="icon" href="images/love-angler-fish-day.webp">
 
 <script>
   /* Pre-paint, so there is no flash. Deliberately NOT following
@@ -248,8 +248,12 @@ h2 {
 
 .pair { position: relative; display: block; line-height: 0; }
 .pair img { display: block; width: 100%; height: auto; }
+/* The UV frame is hand-cropped from a separate exposure, so its aspect ratio
+   only approximates the daylight frame's. object-fit keeps it from stretching:
+   it fills the daylight frame's box and centre-crops the overhang instead. */
 .pair .uv {
   position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
   opacity: 0; transition: opacity 550ms ease;
 }
 [data-theme="dark"] .pair .uv { opacity: 1; }
@@ -350,40 +354,18 @@ footer p { margin: 0 0 6px; }
 
 <section class="wrap">
   <div class="grid-head">
-    <h2>Eighteen originals</h2>
+    <h2>Twelve originals</h2>
     <p>One of a kind, every one. Prices are as listed at Fish City Studios.</p>
   </div>
 
-  <p class="notice"><strong>Note for review:</strong> the blacklight images below are simulated, not photographs. The real UV shoot has not happened yet, so these are the daylight frames pushed dark and cool purely to show how the switch behaves. Anything marked <em>simulated</em> gets replaced before launch.</p>
+  <p class="notice"><strong>Note for review:</strong> every blacklight image below is a real 365nm photograph, except the one marked <em>simulated</em>. That piece has not been shot yet, so its UV frame is still the daylight frame pushed dark and cool. It gets replaced before launch.</p>
 
   <div class="grid">
 
-    <a class="piece" href="https://fishcitystudios.com/products/the-red-light-atmosphere">
-      <span class="pair" data-uv="placeholder">
-        <img class="day" src="images/the-red-light-atmosphere-day.webp" width="1200" height="1265" alt="One panel from The Red Light Atmosphere: an orange anglerfish in profile with its jaws open and a glowing yellow lure hanging above its head." loading="eager">
-        <img class="uv" src="images/the-red-light-atmosphere-uv.webp" width="1200" height="1265" alt="" aria-hidden="true" loading="eager">
-      </span>
-      <span class="meta">
-        <span class="t">The Red Light Atmosphere</span>
-        <span class="d">Acrylic with oil on wood &middot; set of six, each 4.75 &times; 4.75 in</span>
-        <span class="p">$350</span>
-      </span>
-    </a>
 
-    <a class="piece" href="https://fishcitystudios.com/products/safe-harbor">
-      <span class="pair" data-uv="placeholder">
-        <img class="day" src="images/safe-harbor-day.webp" width="1200" height="1766" alt="Safe Harbor: a broad black vertical brushstroke standing over a soft rainbow wash, with a small dark skyline along the upper edge." loading="eager">
-        <img class="uv" src="images/safe-harbor-uv.webp" width="1200" height="1766" alt="" aria-hidden="true" loading="eager">
-      </span>
-      <span class="meta">
-        <span class="t">Safe Harbor</span>
-        <span class="d">Acrylic with oil on stretched canvas &middot; 24 &times; 36 in</span>
-        <span class="p">$2,100</span>
-      </span>
-    </a>
 
     <a class="piece" href="https://fishcitystudios.com/products/love-angler-fish">
-      <span class="pair" data-uv="placeholder">
+      <span class="pair">
         <img class="day" src="images/love-angler-fish-day.webp" width="1200" height="1039" alt="Love Angler Fish: a magenta fish with a wide toothy grin, its lure curling forward from its head into a pink heart." loading="eager">
         <img class="uv" src="images/love-angler-fish-uv.webp" width="1200" height="1039" alt="" aria-hidden="true" loading="eager">
       </span>
@@ -395,7 +377,7 @@ footer p { margin: 0 0 6px; }
     </a>
 
     <a class="piece" href="https://fishcitystudios.com/products/incoming">
-      <span class="pair" data-uv="placeholder">
+      <span class="pair">
         <img class="day" src="images/incoming-day.webp" width="1200" height="980" alt="Incoming: a red figure at the left edge of a red room watching a pale glowing dome rise out of the water, in a red frame." loading="lazy">
         <img class="uv" src="images/incoming-uv.webp" width="1200" height="980" alt="" aria-hidden="true" loading="lazy">
       </span>
@@ -407,7 +389,7 @@ footer p { margin: 0 0 6px; }
     </a>
 
     <a class="piece" href="https://fishcitystudios.com/products/atmosphere-on-loop">
-      <span class="pair" data-uv="placeholder">
+      <span class="pair">
         <img class="day" src="images/atmosphere-on-loop-day.webp" width="1200" height="1483" alt="Atmosphere on Loop: a white moon ringed by an orange sun above a dark blue field scattered with small fish and stars." loading="lazy">
         <img class="uv" src="images/atmosphere-on-loop-uv.webp" width="1200" height="1483" alt="" aria-hidden="true" loading="lazy">
       </span>
@@ -419,7 +401,7 @@ footer p { margin: 0 0 6px; }
     </a>
 
     <a class="piece" href="https://fishcitystudios.com/products/i-knew-it">
-      <span class="pair" data-uv="placeholder">
+      <span class="pair">
         <img class="day" src="images/i-knew-it-day.webp" width="1200" height="967" alt="I KNEW IT!: a large pale fish curving through a rainbow arc, trailed by a stream of small purple and green fish." loading="lazy">
         <img class="uv" src="images/i-knew-it-uv.webp" width="1200" height="967" alt="" aria-hidden="true" loading="lazy">
       </span>
@@ -431,7 +413,7 @@ footer p { margin: 0 0 6px; }
     </a>
 
     <a class="piece" href="https://fishcitystudios.com/products/sardines-1">
-      <span class="pair" data-uv="placeholder">
+      <span class="pair">
         <img class="day" src="images/sardines-1-day.webp" width="1200" height="1572" alt="Sardines #1: three small fish threading through orange and green kelp fronds against a pale blue ground." loading="lazy">
         <img class="uv" src="images/sardines-1-uv.webp" width="1200" height="1572" alt="" aria-hidden="true" loading="lazy">
       </span>
@@ -443,7 +425,7 @@ footer p { margin: 0 0 6px; }
     </a>
 
     <a class="piece" href="https://fishcitystudios.com/products/spotlight-cuttlefish">
-      <span class="pair" data-uv="placeholder">
+      <span class="pair">
         <img class="day" src="images/spotlight-cuttlefish-day.webp" width="1200" height="359" alt="Spotlight Cuttlefish: a long horizontal red panel of patterned faces, with a pale creature surfacing at the right end." loading="lazy">
         <img class="uv" src="images/spotlight-cuttlefish-uv.webp" width="1200" height="359" alt="" aria-hidden="true" loading="lazy">
       </span>
@@ -455,7 +437,7 @@ footer p { margin: 0 0 6px; }
     </a>
 
     <a class="piece" href="https://fishcitystudios.com/products/cracked">
-      <span class="pair" data-uv="placeholder">
+      <span class="pair">
         <img class="day" src="images/cracked-day.webp" width="1200" height="1468" alt="Cracked: a tall dark figure with an orange head standing on a yellow floor, orange scribbled light breaking behind it." loading="lazy">
         <img class="uv" src="images/cracked-uv.webp" width="1200" height="1468" alt="" aria-hidden="true" loading="lazy">
       </span>
@@ -467,7 +449,7 @@ footer p { margin: 0 0 6px; }
     </a>
 
     <a class="piece" href="https://fishcitystudios.com/products/impressions">
-      <span class="pair" data-uv="placeholder">
+      <span class="pair">
         <img class="day" src="images/impressions-day.webp" width="1200" height="1861" alt="Impressions: a dark-skinned figure with pale wings and a star overhead, above bands of red and teal filled with fish and flowers." loading="lazy">
         <img class="uv" src="images/impressions-uv.webp" width="1200" height="1861" alt="" aria-hidden="true" loading="lazy">
       </span>
@@ -478,56 +460,12 @@ footer p { margin: 0 0 6px; }
       </span>
     </a>
 
-    <a class="piece" href="https://fishcitystudios.com/products/the-headlands">
-      <span class="pair" data-uv="placeholder">
-        <img class="day" src="images/the-headlands-day.webp" width="1200" height="946" alt="The Headlands: three faces above a rocky shoreline, with cloud shapes and a garden growing out of the topmost head." loading="lazy">
-        <img class="uv" src="images/the-headlands-uv.webp" width="1200" height="946" alt="" aria-hidden="true" loading="lazy">
-      </span>
-      <span class="meta">
-        <span class="t">The Headlands</span>
-        <span class="d">Acrylic with oil on paper &middot; 11.5 &times; 9 in</span>
-        <span class="p">$275</span>
-      </span>
-    </a>
 
-    <a class="piece" href="https://fishcitystudios.com/products/brocolini">
-      <span class="pair" data-uv="placeholder">
-        <img class="day" src="images/brocolini-day.webp" width="1200" height="1491" alt="Brocolini: a dense collage of faces, houses, boats and small creatures in vivid pinks, blues and greens, in a white frame." loading="lazy">
-        <img class="uv" src="images/brocolini-uv.webp" width="1200" height="1491" alt="" aria-hidden="true" loading="lazy">
-      </span>
-      <span class="meta">
-        <span class="t">Brocolini</span>
-        <span class="d">Acrylic with oil on paper &middot; 11.75 &times; 9.25 in</span>
-        <span class="p">$275</span>
-      </span>
-    </a>
 
-    <a class="piece" href="https://fishcitystudios.com/products/963-hz">
-      <span class="pair" data-uv="placeholder">
-        <img class="day" src="images/963-hz-day.webp" width="1200" height="957" alt="963 HZ: a crowded scene of bottles, a reclining pig, boats and faces worked in olive and blue, framed." loading="lazy">
-        <img class="uv" src="images/963-hz-uv.webp" width="1200" height="957" alt="" aria-hidden="true" loading="lazy">
-      </span>
-      <span class="meta">
-        <span class="t">963 HZ</span>
-        <span class="d">Acrylic with oil on paper &middot; 9.25 &times; 11.75 in</span>
-        <span class="p">$275</span>
-      </span>
-    </a>
 
-    <a class="piece" href="https://fishcitystudios.com/products/jackpot">
-      <span class="pair" data-uv="placeholder">
-        <img class="day" src="images/jackpot-day.webp" width="1200" height="1493" alt="Jackpot: a pale-faced figure wearing a crown beside a stepped orange tower, with small houses and a fish overhead." loading="lazy">
-        <img class="uv" src="images/jackpot-uv.webp" width="1200" height="1493" alt="" aria-hidden="true" loading="lazy">
-      </span>
-      <span class="meta">
-        <span class="t">Jackpot</span>
-        <span class="d">Acrylic with oil on paper &middot; 8 &times; 10.25 in</span>
-        <span class="p">$275</span>
-      </span>
-    </a>
 
     <a class="piece" href="https://fishcitystudios.com/products/surprise-guest">
-      <span class="pair" data-uv="placeholder">
+      <span class="pair">
         <img class="day" src="images/surprise-guest-day.webp" width="1200" height="575" alt="Surprise Guest: a long horizontal panel with a blonde girl in a pink bow flanked by two white ghosts on deep blue." loading="lazy">
         <img class="uv" src="images/surprise-guest-uv.webp" width="1200" height="575" alt="" aria-hidden="true" loading="lazy">
       </span>
@@ -539,7 +477,7 @@ footer p { margin: 0 0 6px; }
     </a>
 
     <a class="piece" href="https://fishcitystudios.com/products/bigmouth">
-      <span class="pair" data-uv="placeholder">
+      <span class="pair">
         <img class="day" src="images/bigmouth-day.webp" width="1200" height="723" alt="Bigmouth: a bright green fish with a long open jaw on a deep green ground flecked with yellow dots." loading="lazy">
         <img class="uv" src="images/bigmouth-uv.webp" width="1200" height="723" alt="" aria-hidden="true" loading="lazy">
       </span>
@@ -563,7 +501,7 @@ footer p { margin: 0 0 6px; }
     </a>
 
     <a class="piece" href="https://fishcitystudios.com/products/fearless">
-      <span class="pair" data-uv="placeholder">
+      <span class="pair">
         <img class="day" src="images/fearless-day.webp" width="1200" height="1150" alt="Fearless: a yellow fish and an orange fish facing each other across a red and teal field, a white sun between them." loading="lazy">
         <img class="uv" src="images/fearless-uv.webp" width="1200" height="1150" alt="" aria-hidden="true" loading="lazy">
       </span>
@@ -580,7 +518,7 @@ footer p { margin: 0 0 6px; }
 <section class="wrap">
   <div class="band">
     <h2>For rooms that already have the lighting</h2>
-    <p>If you run a space with a UV rig, you already own the second half of this work. The whole body installs as one piece: eighteen originals, <span class="total">$8,010</span> for all of them, individually available.</p>
+    <p>If you run a space with a UV rig, you already own the second half of this work. The whole body installs as one piece: twelve originals, <span class="total">$4,460</span> for all of them, individually available.</p>
     <ul>
       <li>Immersive rooms, blacklight mini golf, arcade bars, science centers</li>
       <li>Music venues, clubs, and festival art programs</li>
@@ -589,7 +527,7 @@ footer p { margin: 0 0 6px; }
     <p>Viewings in Gloucester by arrangement. Ask and we will send the full inventory with dimensions.</p>
     <div class="cta-row">
       <a class="btn" href="mailto:mark@fishcitystudios.com?subject=The%20Midnight%20Zone%20(installation%20enquiry)">Enquire about the full body</a>
-      <a class="btn ghost" href="https://fishcitystudios.com/collections/amy-chace">See all 18 in the shop</a>
+      <a class="btn ghost" href="https://fishcitystudios.com/collections/amy-chace">See them all in the shop</a>
     </div>
   </div>
 </section>
