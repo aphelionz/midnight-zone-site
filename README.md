@@ -52,16 +52,18 @@ Also outstanding: the booth's UV wavelength (365nm vs 395nm) is still unmeasured
 
 ## DNS
 
+DNS is live and the site serves from **https://themidnightzone.art/**. The
+`github.io` URL now 301s to it.
+
 > [!NOTE]
-> The domain file is currently parked as **`CNAME.pending`**, not `CNAME`.
+> The domain file was parked as `CNAME.pending` while DNS propagated, because a
+> live `CNAME` makes Pages redirect the `github.io` URL to a domain that does
+> not resolve yet, which breaks the review URL. That is over: the file is now
+> `CNAME` and the redirect lands.
 >
-> With a live `CNAME` file, Pages sets the custom domain immediately and the
-> `github.io` URL redirects to it. Until DNS actually points at GitHub that
-> redirect goes nowhere, which would break the review URL. So while this is in
-> review the site lives at **https://aphelionz.github.io/midnight-zone-site/**.
->
-> When DNS is in place: `git mv CNAME.pending CNAME`, push, then set the custom
-> domain under Settings > Pages and tick Enforce HTTPS once the cert provisions.
+> Keep the file. The custom domain is also stored in Settings > Pages, but that
+> setting alone is not durable: the workflow uploads the whole repo as the Pages
+> artifact, and a deploy whose artifact has no `CNAME` can clear it.
 
 Not documented in any of the sibling repos, so it is written down here. `themidnightzone.art` is an apex domain, so it needs A records rather than a CNAME record at the registrar:
 
@@ -113,8 +115,7 @@ Both modes pass WCAG AA with no adjustments and no outstanding contrast suggesti
 
 - `index.html` : the site
 - `images/` : `<handle>-day.webp` and `<handle>-uv.webp` pairs, committed
-- `raw/` : source PNGs, gitignored
-- `optimize-images.sh` : raw PNG to web WebP
-- `make-uv-placeholders.py` : temporary, delete after the real shoot
-- `og.jpg` : social card
-- `CNAME.pending` : custom domain, parked until DNS is live (see DNS above)
+- `raw/` : source PNGs and the Lightroom UV exports, gitignored
+- `optimize-images.sh` : raw PNG/JPEG to web WebP
+- `og.jpg` : social card, a day/UV pair of Love Angler Fish
+- `CNAME` : custom domain; must stay in the repo, it ships in the Pages artifact (see DNS above)
