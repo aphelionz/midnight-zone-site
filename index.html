@@ -247,21 +247,6 @@ h2 {
 }
 [data-theme="dark"] .pair .uv { opacity: 1; }
 
-/* Badge over fabricated DAYLIGHT frames. The mirror of the old simulated-UV
-   badge: these pieces have only ever been shot under blacklight, so it is the
-   daylight frame that is invented (the UV exposure, inverted) and the badge
-   belongs in light mode. Remove with the data-day attributes once the daylight
-   photographs land. */
-.pair[data-day="placeholder"]::after {
-  content: "daylight simulated"; position: absolute; right: 8px; bottom: 8px;
-  z-index: 2; opacity: 0.92; transition: opacity 550ms ease;
-  font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase;
-  font-weight: 600; line-height: 1;
-  padding: 5px 8px; border-radius: 4px;
-  background: var(--accent-2); color: #fff;
-}
-[data-theme="dark"] .pair[data-day="placeholder"]::after { opacity: 0; }
-
 .meta { display: block; padding: 13px 15px 15px; }
 .meta .t {
   display: block; font-family: var(--font-display);
@@ -491,15 +476,10 @@ footer p { margin: 0 0 6px; }
       </span>
     </a>
 
-    <!-- The three below are shot under UV only. Their daylight frames are the
-         UV exposures inverted, which is what data-day marks: keep the attribute
-         until each one is genuinely photographed in daylight. They also have no
-         Shopify product yet, so the link falls back to the collection. -->
-
     <a class="piece" href="https://fishcitystudios.com/collections/amy-chace">
-      <span class="pair" data-day="placeholder">
-        <img class="day" src="images/medicate-day.webp" width="1200" height="1707" alt="Medicate: a pale abstract field of drifting washes with a bright bloom low on the left." loading="lazy">
-        <img class="uv" src="images/medicate-uv.webp" width="1200" height="1707" alt="" aria-hidden="true" loading="lazy">
+      <span class="pair">
+        <img class="day" src="images/medicate-day.webp" width="1200" height="1692" alt="Medicate: a pale abstract field of yellow and white washes over a dark ground, a red and magenta bloom low on the left." loading="lazy">
+        <img class="uv" src="images/medicate-uv.webp" width="1200" height="1692" alt="" aria-hidden="true" loading="lazy">
       </span>
       <span class="meta">
         <span class="t">Medicate</span>
@@ -509,9 +489,9 @@ footer p { margin: 0 0 6px; }
     </a>
 
     <a class="piece" href="https://fishcitystudios.com/collections/amy-chace">
-      <span class="pair" data-day="placeholder">
-        <img class="day" src="images/visiting-day.webp" width="1200" height="1825" alt="Visiting: a robed figure standing at the water's edge beneath a glowing dome, a speckled shore below." loading="lazy">
-        <img class="uv" src="images/visiting-uv.webp" width="1200" height="1825" alt="" aria-hidden="true" loading="lazy">
+      <span class="pair">
+        <img class="day" src="images/visiting-day.webp" width="1200" height="1832" alt="Visiting: a red-robed figure standing waist-deep at the water's edge beneath a glowing yellow sun, a starry sky above." loading="lazy">
+        <img class="uv" src="images/visiting-uv.webp" width="1200" height="1832" alt="" aria-hidden="true" loading="lazy">
       </span>
       <span class="meta">
         <span class="t">Visiting</span>
@@ -521,9 +501,9 @@ footer p { margin: 0 0 6px; }
     </a>
 
     <a class="piece" href="https://fishcitystudios.com/collections/amy-chace">
-      <span class="pair" data-day="placeholder">
-        <img class="day" src="images/a-walk-in-the-woods-day.webp" width="1200" height="3467" alt="A Walk in the Woods: a tall narrow panel with a figure in a long coat below, small figures climbing among trees above." loading="lazy">
-        <img class="uv" src="images/a-walk-in-the-woods-uv.webp" width="1200" height="3467" alt="" aria-hidden="true" loading="lazy">
+      <span class="pair">
+        <img class="day" src="images/a-walk-in-the-woods-day.webp" width="1200" height="3853" alt="A Walk in the Woods: a tall narrow panel, a figure in a red coat looking left below a dark wood where small white figures drift among the branches." loading="lazy">
+        <img class="uv" src="images/a-walk-in-the-woods-uv.webp" width="1200" height="3853" alt="" aria-hidden="true" loading="lazy">
       </span>
       <span class="meta">
         <span class="t">A Walk in the Woods</span>
