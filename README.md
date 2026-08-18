@@ -6,12 +6,16 @@ Single static `index.html`, no build step. Served via GitHub Pages at the custom
 
 ## The idea
 
-The light/dark switch is not chrome, it is the product. Light mode shows each painting photographed in daylight; dark mode shows the same painting under blacklight. Flipping the switch does to the page what flipping the switch does to the booth wall.
+Two independent axes, two attributes on `<html>`:
 
-Two consequences for anyone editing this:
+- **`data-theme` (light | dark) is the chrome.** It belongs to the system: set from `prefers-color-scheme` before paint, updated live if the OS switches, never stored, and the page offers no control for it.
+- **`data-light` (day | uv) is the artwork lighting, and it is the product.** Daylight shows each painting photographed in daylight; blacklight crossfades to the same painting under UV. The big Daylight / Blacklight switch (fixed button on mobile) drives only this axis. Flipping it does to the page what flipping the switch does to the booth wall.
 
-- **Every visitor lands in light mode**, on purpose. The pre-paint script in `<head>` deliberately ignores `prefers-color-scheme`, because here the mode is content rather than a preference. A visitor who never presses the switch never learns what the work does, so the control is header-level, sticky, and labelled in words (Daylight / Blacklight) rather than sun and moon icons alone.
+Consequences for anyone editing this:
+
+- **Every visitor lands in daylight**, on purpose, whatever their system theme: the reveal is the visitor's to cause. A lighting choice persists across visits (`localStorage.light`).
 - **Each card holds both photographs stacked**, crossfading on `opacity`. Never swap `src`: the transformation has to be watchable, and a swap that blinks kills the whole effect.
+- **Two of the four states carry special handling.** Dark chrome + daylight art dims the white-backdrop photos a step (`brightness(0.92)`); light chrome + blacklight art puts a near-black matte behind each frame. The violet `--glow` fires only on dark + blacklight, the state that matches the booth.
 
 ## Edit
 
@@ -32,23 +36,6 @@ Originals from the Shopify CDN are multi-megabyte 16-bit PNGs (182 MB for 18 fil
 ```
 
 That writes ~1200px WebP at quality 80 into `images/`, which is what gets committed. CI never builds anything.
-
-## Before launch
-
-> [!IMPORTANT]
-> The blacklight photographs **do not exist yet.** Nobody has shot this work under UV. The `-uv.webp` files currently in `images/` were fabricated by `make-uv-placeholders.py` from the daylight frames, purely so the switch could be reviewed.
-
-They are marked in three places so they cannot ship by accident: a `simulated` badge on each image in dark mode, a dashed notice above the grid in dark mode, and a `data-uv="placeholder"` attribute on every `.pair`.
-
-When the real shoot lands:
-
-1. Put the UV frames in `raw/` as `<handle>-uv.png` and run `./optimize-images.sh`
-2. Delete every `data-uv="placeholder"` attribute in `index.html`
-3. Delete the `.notice` paragraph and its CSS block
-4. Delete `make-uv-placeholders.py`
-5. Regenerate `og.jpg` from a real blacklight frame
-
-Also outstanding: the booth's UV wavelength (365nm vs 395nm) is still unmeasured, and the bundled lamp has not been specced.
 
 ## DNS
 
@@ -85,7 +72,7 @@ Then in the repo: **Settings > Pages > Source = "GitHub Actions"**, and once the
 
 ## Fonts
 
-Self-hosted in `fonts/`, both OFL with licences alongside. **Deliberate deviation from the sibling sites, which use no webfonts at all** — but the zero-third-party-request rule still holds, because these are served same-origin. Never swap them for a Google Fonts `<link>`.
+Self-hosted in `fonts/`, both OFL with licences alongside. **Deliberate deviation from the sibling sites, which use no webfonts at all**, but the zero-third-party-request rule still holds, because these are served same-origin. Never swap them for a Google Fonts `<link>`.
 
 - **Fraunces** (display: h1, lede, h2, piece titles). Variable, four axes. `SOFT` bends the curves; `WONK` swaps in flowing alternates for `g h m n s`, which is most of what "The Midnight Zone" and "bathypelagic submersion" are made of.
 - **Manrope** (body and UI). Quiet humanist sans, open apertures.

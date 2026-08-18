@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" data-light="day">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,21 +16,18 @@
 <link rel="icon" href="images/love-angler-fish-day.webp">
 
 <script>
-  /* Pre-paint, so there is no flash. An explicit choice wins and is
-     remembered. Failing that the system setting decides, so a device in
-     dark mode lands in blacklight rather than being shown the daylight
-     half and made to ask for the other one. */
+  /* Pre-paint, so there is no flash. Two independent axes:
+     data-theme is the chrome and belongs to the system; there is no site
+     control for it and nothing stored. data-light is the artwork lighting,
+     the thing the big switch drives. Everyone lands in daylight and causes
+     the reveal themselves; a visitor's choice persists across visits. */
   (() => {
-    try {
-      var t = localStorage.getItem("theme");
-      if (t === "light" || t === "dark") {
-        document.documentElement.setAttribute("data-theme", t);
-        return;
-      }
-    } catch (_) {}
     var dark = window.matchMedia
       && window.matchMedia("(prefers-color-scheme: dark)").matches;
     document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var uv = false;
+    try { uv = localStorage.getItem("light") === "uv"; } catch (_) {}
+    document.documentElement.setAttribute("data-light", uv ? "uv" : "day");
   })();
 </script>
 
@@ -112,8 +109,12 @@
   --on-accent: #fbf9ff;
   --focus-ring: #c8adff;
   --card-hover: #2c2934;
-  --glow: 0 0 44px -8px rgba(143, 0, 255, 0.5);
 }
+
+/* The glow belongs to the booth, not to the chrome: it only appears when
+   the room is dark AND the blacklight art is up. Dark chrome showing the
+   daylight half stays matte. */
+[data-theme="dark"][data-light="uv"] { --glow: 0 0 44px -8px rgba(143, 0, 255, 0.5); }
 
 * { box-sizing: border-box; }
 
@@ -225,9 +226,9 @@ body {
   body { padding-bottom: 92px; }
 }
 
-/* Show the face for the mode you are NOT in. */
-[data-theme="light"] .switch-fab .to-light,
-[data-theme="dark"]  .switch-fab .to-dark { display: none; }
+/* Show the face for the lighting you are NOT in. */
+[data-light="day"] .switch-fab .to-light,
+[data-light="uv"]  .switch-fab .to-dark { display: none; }
 
 /* ---------- hero ---------- */
 
@@ -283,7 +284,7 @@ h2 {
 .piece:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
 
 .pair { position: relative; display: block; line-height: 0; }
-.pair img { display: block; width: 100%; height: auto; }
+.pair img { display: block; width: 100%; height: auto; transition: filter 500ms ease; }
 /* The UV frame is hand-cropped from a separate exposure, so its aspect ratio
    only approximates the daylight frame's. object-fit keeps it from stretching:
    it fills the daylight frame's box and centre-crops the overhang instead. */
@@ -292,7 +293,15 @@ h2 {
   object-fit: cover; object-position: center;
   opacity: 0; transition: opacity 550ms ease;
 }
-[data-theme="dark"] .pair .uv { opacity: 1; }
+[data-light="uv"] .pair .uv { opacity: 1; }
+
+/* The two states the axes make possible need a hand each way. The daylight
+   shots are white-backdrop photos, so at full brightness on near-black chrome
+   they glare; pull them back a step. UV shots riding on light chrome get a
+   near-black matte behind the frame, so any sliver the crop leaves uncovered
+   reads as the dark room rather than as the card. */
+[data-theme="dark"] .pair .day { filter: brightness(0.92); }
+[data-light="uv"] .pair { background: #17141d; }
 
 .meta { display: block; padding: 13px 15px 15px; }
 .meta .t {
@@ -373,11 +382,11 @@ footer p { margin: 0 0 6px; }
   <p class="body">A thousand meters down, the ocean stops receiving light and starts making its own. Amy Chace paints with UV pigments, so her work does the same: one set of paintings in daylight, another under blacklight. Same board, same brushstrokes, a different picture. If you run a room that is already lit for this, the switch below is the whole proposition.</p>
   <div class="switch">
     <span class="seg" role="group" aria-label="Daylight or blacklight">
-      <button class="mode" data-mode="light" aria-pressed="true" aria-label="Daylight">
+      <button class="mode" data-light="day" aria-pressed="true" aria-label="Daylight">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M19.4 4.6l-2.1 2.1M6.7 17.3l-2.1 2.1"/></svg>
         <span>Daylight</span>
       </button>
-      <button class="mode" data-mode="dark" aria-pressed="false" aria-label="Blacklight">
+      <button class="mode" data-light="uv" aria-pressed="false" aria-label="Blacklight">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
         <span>Blacklight</span>
       </button>
@@ -626,34 +635,32 @@ footer p { margin: 0 0 6px; }
     const buttons = document.querySelectorAll(".mode");
     const CHROME = { light: "#f7f5fd", dark: "#17141d" };
 
-    const fab = document.querySelector(".switch-fab");
+    /* Chrome follows the system, always; the page offers no control for it. */
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const chosen = () => {
-      try { return localStorage.getItem("theme"); } catch (_) { return null; }
-    };
+    function applyTheme(dark) {
+      root.setAttribute("data-theme", dark ? "dark" : "light");
+      if (meta) meta.setAttribute("content", CHROME[dark ? "dark" : "light"]);
+    }
+    mq.addEventListener("change", e => applyTheme(e.matches));
 
-    function apply(mode, persist) {
-      root.setAttribute("data-theme", mode);
-      buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
-      if (meta) meta.setAttribute("content", CHROME[mode]);
+    /* Lighting is the product control. A choice sticks across visits. */
+    function applyLight(mode, persist) {
+      root.setAttribute("data-light", mode);
+      buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.light === mode)));
       if (persist) {
-        try { localStorage.setItem("theme", mode); } catch (_) {}
+        try { localStorage.setItem("light", mode); } catch (_) {}
       }
     }
 
-    buttons.forEach(b => b.addEventListener("click", () => apply(b.dataset.mode, true)));
+    buttons.forEach(b => b.addEventListener("click", () => applyLight(b.dataset.light, true)));
+    const fab = document.querySelector(".switch-fab");
     if (fab) {
       fab.addEventListener("click", () =>
-        apply(root.getAttribute("data-theme") === "dark" ? "light" : "dark", true));
+        applyLight(root.getAttribute("data-light") === "uv" ? "day" : "uv", true));
     }
 
-    /* Keep following the system until the visitor overrides it. Once they
-       pick a side that choice sticks, including across a system change. */
-    mq.addEventListener("change", e => {
-      if (!chosen()) apply(e.matches ? "dark" : "light", false);
-    });
-
-    apply(root.getAttribute("data-theme") || "light", false);
+    applyTheme(root.getAttribute("data-theme") === "dark");
+    applyLight(root.getAttribute("data-light") || "day", false);
   })();
 </script>
 
