@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://themidnightzone.art/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#f7f5fd">
+<meta name="theme-color" content="#fbfaff">
 <link rel="icon" href="images/love-angler-fish-day.webp">
 
 <script>
@@ -82,7 +82,7 @@
      violet room throws it forward instead of competing with it.
    Both modes pass WCAG AA with no adjustments. */
 :root {
-  --background: #f7f5fd;
+  --background: #fbfaff;
   --surface: #eceaf2;
   --text: #1b1920;
   --muted: #605a6d;
@@ -97,7 +97,7 @@
   --glow: none;
 }
 [data-theme="dark"] {
-  --background: #17141d;
+  --background: #1f1b26;
   --surface: #24212a;
   --text: #f4f2f9;
   --muted: #a7a1b5;
@@ -115,6 +115,14 @@
    the room is dark AND the blacklight art is up. Dark chrome showing the
    daylight half stays matte. */
 [data-theme="dark"][data-light="uv"] { --glow: 0 0 44px -8px rgba(143, 0, 255, 0.5); }
+
+/* The lighting axis breathes the background a step inside each theme:
+   daylight lifts the room, blacklight sinks it, whichever chrome the system
+   chose. Only --background moves (light #fbfaff/#efecf8, dark #1f1b26/#100e15,
+   day/uv); surfaces hold still so the cards keep their footing. The compound
+   rule keeps dark+uv deepest regardless of rule order. */
+[data-light="uv"] { --background: #efecf8; }
+[data-theme="dark"][data-light="uv"] { --background: #100e15; }
 
 * { box-sizing: border-box; }
 
@@ -633,13 +641,21 @@ footer p { margin: 0 0 6px; }
     const root = document.documentElement;
     const meta = document.querySelector('meta[name="theme-color"]');
     const buttons = document.querySelectorAll(".mode");
-    const CHROME = { light: "#f7f5fd", dark: "#17141d" };
+    /* Browser-chrome color tracks the page background, which both axes move. */
+    const CHROME = {
+      light: { day: "#fbfaff", uv: "#efecf8" },
+      dark:  { day: "#1f1b26", uv: "#100e15" }
+    };
+    function syncMeta() {
+      if (meta) meta.setAttribute("content",
+        CHROME[root.getAttribute("data-theme")][root.getAttribute("data-light")]);
+    }
 
     /* Chrome follows the system, always; the page offers no control for it. */
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     function applyTheme(dark) {
       root.setAttribute("data-theme", dark ? "dark" : "light");
-      if (meta) meta.setAttribute("content", CHROME[dark ? "dark" : "light"]);
+      syncMeta();
     }
     mq.addEventListener("change", e => applyTheme(e.matches));
 
@@ -647,6 +663,7 @@ footer p { margin: 0 0 6px; }
     function applyLight(mode, persist) {
       root.setAttribute("data-light", mode);
       buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.light === mode)));
+      syncMeta();
       if (persist) {
         try { localStorage.setItem("light", mode); } catch (_) {}
       }
