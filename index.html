@@ -7,7 +7,7 @@
 <title>The Midnight Zone &middot; UV-reactive paintings by Amy Chace</title>
 <meta name="description" content="A bathypelagic blacklight submersion. Amy Chace paints with UV pigments: one picture in daylight, another under blacklight. Fourteen originals at Fish City Studios, Gloucester MA.">
 <meta property="og:title" content="The Midnight Zone">
-<meta property="og:description" content="A bathypelagic blacklight submersion. Paintings that read twice: daylight one way, blacklight another.">
+<meta property="og:description" content="Fourteen UV-reactive originals by Amy Chace. If your room already has the lighting, you own the second half of the work: $5,745 for the set, individually available.">
 <meta property="og:image" content="https://themidnightzone.art/og.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://themidnightzone.art/">
@@ -16,15 +16,21 @@
 <link rel="icon" href="images/love-angler-fish-day.webp">
 
 <script>
-  /* Pre-paint, so there is no flash. Deliberately NOT following
-     prefers-color-scheme: here the mode is content, not a preference.
-     Everyone lands in daylight and turns the lights out themselves. */
+  /* Pre-paint, so there is no flash. An explicit choice wins and is
+     remembered. Failing that the system setting decides, so a device in
+     dark mode lands in blacklight rather than being shown the daylight
+     half and made to ask for the other one. */
   (() => {
     try {
       var t = localStorage.getItem("theme");
-      document.documentElement.setAttribute("data-theme", t || "light");
-      if (t) document.documentElement.setAttribute("data-returning", "");
+      if (t === "light" || t === "dark") {
+        document.documentElement.setAttribute("data-theme", t);
+        return;
+      }
     } catch (_) {}
+    var dark = window.matchMedia
+      && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
   })();
 </script>
 
@@ -181,13 +187,54 @@ body {
   outline: 2px solid var(--focus-ring); outline-offset: -2px;
 }
 .seg svg { flex: none; }
-@media (max-width: 420px) {
-  .seg .mode { padding: 13px 18px; font-size: 15px; }
+
+/* ---------- the mobile switch ----------
+   Narrow screens drop the segmented pair for one fixed button at the foot of
+   the viewport, so the control is reachable from anywhere in a long scroll
+   instead of only at the top. It names the mode it will switch TO: with no
+   visible partner to contrast against, naming the current mode reads as a
+   label rather than a control. Both faces are in the markup and CSS picks
+   one, so the label needs no JavaScript to stay correct. */
+.switch-fab { display: none; }
+
+@media (max-width: 640px) {
+  .switch { display: none; }
+
+  .switch-fab {
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    position: fixed; z-index: 20;
+    /* centred with auto margins rather than left:50% + translateX(-50%): the
+       transform leaves an untransformed box hanging off the right edge, which
+       some engines count toward scrollWidth and turn into a phantom
+       horizontal scroll. */
+    left: 0; right: 0; margin-inline: auto; width: fit-content;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    border: 1px solid var(--border); border-radius: 999px;
+    background: var(--accent); color: var(--on-accent);
+    padding: 15px 26px; font: inherit; font-size: 16px; font-weight: 600;
+    letter-spacing: 0.01em; white-space: nowrap; cursor: pointer;
+    box-shadow: 0 8px 26px -8px rgba(0, 0, 0, 0.5), var(--glow);
+    transition: background 500ms ease, color 500ms ease, box-shadow 500ms ease;
+  }
+  .switch-fab:focus-visible {
+    outline: 2px solid var(--focus-ring); outline-offset: 3px;
+  }
+  .switch-fab svg { flex: none; }
+
+  /* the button is fixed, so the page needs somewhere to end underneath it */
+  body { padding-bottom: 92px; }
 }
+
+/* Show the face for the mode you are NOT in. */
+[data-theme="light"] .switch-fab .to-light,
+[data-theme="dark"]  .switch-fab .to-dark { display: none; }
 
 /* ---------- hero ---------- */
 
-.hero { padding: 96px 0 56px; }
+/* padding-block, not padding: .hero shares the element with .wrap and comes
+   later in the sheet at equal specificity, so the shorthand was silently
+   zeroing .wrap's 22px side padding and running the hero to both edges. */
+.hero { padding-block: 96px 56px; }
 h1 {
   font-family: var(--font-display);
   font-variation-settings: "opsz" 144, "SOFT" 55, "WONK" 1;
@@ -271,6 +318,14 @@ h2 {
 .band li { margin-bottom: 5px; }
 .band .total { color: var(--text); font-weight: 600; }
 
+/* On a 375px screen the band's own 30px sits inside .wrap's 22px, so the text
+   started 52px in and had 271px to live on. Pull both in. */
+@media (max-width: 640px) {
+  .wrap { padding: 0 18px; }
+  .hero { padding-block: 60px 44px; }
+  .band { margin-top: 26px; padding: 22px 20px 24px; }
+}
+
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 12px 20px; border-radius: 999px;
@@ -329,6 +384,17 @@ footer p { margin: 0 0 6px; }
     </span>
   </div>
 </section>
+
+<button class="switch-fab" type="button">
+  <span class="to-dark">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+  </span>
+  <span class="to-light">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M19.4 4.6l-2.1 2.1M6.7 17.3l-2.1 2.1"/></svg>
+  </span>
+  <span class="to-dark">Switch to blacklight</span>
+  <span class="to-light">Switch to daylight</span>
+</button>
 
 <section class="wrap">
   <div class="grid-head">
@@ -558,17 +624,33 @@ footer p { margin: 0 0 6px; }
     const buttons = document.querySelectorAll(".mode");
     const CHROME = { light: "#f7f5fd", dark: "#17141d" };
 
+    const fab = document.querySelector(".switch-fab");
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const chosen = () => {
+      try { return localStorage.getItem("theme"); } catch (_) { return null; }
+    };
+
     function apply(mode, persist) {
       root.setAttribute("data-theme", mode);
       buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
       if (meta) meta.setAttribute("content", CHROME[mode]);
       if (persist) {
         try { localStorage.setItem("theme", mode); } catch (_) {}
-        root.setAttribute("data-returning", "");
       }
     }
 
     buttons.forEach(b => b.addEventListener("click", () => apply(b.dataset.mode, true)));
+    if (fab) {
+      fab.addEventListener("click", () =>
+        apply(root.getAttribute("data-theme") === "dark" ? "light" : "dark", true));
+    }
+
+    /* Keep following the system until the visitor overrides it. Once they
+       pick a side that choice sticks, including across a system change. */
+    mq.addEventListener("change", e => {
+      if (!chosen()) apply(e.matches ? "dark" : "light", false);
+    });
+
     apply(root.getAttribute("data-theme") || "light", false);
   })();
 </script>
